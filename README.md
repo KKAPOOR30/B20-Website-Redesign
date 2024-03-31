@@ -15,9 +15,8 @@ Do we need the teacher accept the student or can anybody just sign up?
 
 Login page:
 
-Options for Signup and Login 
-
-if Signup then show signup form :
+- Options for Signup and Login 
+- if Signup then show signup form :
     (Prof or student, 
     first name,
     last name,
@@ -26,8 +25,7 @@ if Signup then show signup form :
     passward,
     confirm pasword,
     Submit)
-
-if log in then show login form :
+- if log in then show login form :
     (Prof or Student,
     email,
     password,
