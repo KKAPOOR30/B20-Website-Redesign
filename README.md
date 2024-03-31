@@ -16,21 +16,23 @@ Do we need the teacher accept the student or can anybody just sign up?
 Login page:
 
 Options for Signup and Login 
-if Signup then show signup form 
-    Prof or student, 
+
+if Signup then show signup form :
+    (Prof or student, 
     first name,
     last name,
     student/prof number,
     email,
     passward,
     confirm pasword,
-    Submit
-if log in then show login form 
-    Prof or Student,
+    Submit)
+
+if log in then show login form :
+    (Prof or Student,
     email,
     password,
     submit
-    If valid then log in and redirect othrewise message to try again
+    If valid then log in and redirect othrewise message to try again)
 
 
 Website:
