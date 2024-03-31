@@ -38,9 +38,11 @@ Website:
 General: 
 - Fix some of the pages that are very basic or incomplete
 - Add a logout and profile area and 
+
 For Students:
 - Add a Grades Page with grades and remark box and button with each grade
 - Update the Feedback form with the new questions and let him select the instructor
+
 For Instructors:
 - Need an are with all students and their grades
 - Need a page to display all the feedback given to the specific instructor
