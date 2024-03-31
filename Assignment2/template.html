@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+   <meta charset="utf-8">
+   <title>Lecture Notes</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+ </head>
+ <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">Lecture Notes for B20</h1>
+        <strong>
+        <nav class="navigation">
+            {% if session.name %}
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="#" onclick="confirmLogout()">Logout</a>
+            {% else %}
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </nav>
+        <script>
+          function confirmLogout(){
+              // Display a confirmation dialog
+              var confirmation = confirm("Are you sure you want to logout?");
+              
+              // If user confirms, redirect to logout URL
+              if (confirmation) {
+                  window.location.href = "{{ url_for('logout') }}";
+              }
+          }
+        </script>
+        </strong>
+      </div>
+    </header>
+    <br>
+    
+    {% block content %}
+    {% endblock %}
+    
+ </body>
+</html>
