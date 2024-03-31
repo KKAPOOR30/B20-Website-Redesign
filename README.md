@@ -4,9 +4,6 @@ To do:
 
 Database:
 - person(username,email,password(i hashed it),type{student or insturctor})
-- Students(f_name, l_name, stud_id, email, password(HASHED))
-- Professor(f_name, l_name, email, password)
-- Courses(Code, prof_email)
 - Grades(stud_id, A1, A2, A3, Tutorials, Midterm, Exam, Final)
 - Feedbacks(prof_email, Feedback)
 
