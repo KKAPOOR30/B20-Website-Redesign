@@ -16,6 +16,7 @@ bcrypt = Bcrypt(app)
 
 class Person(db.Model):
     __tablename__ = 'Person'
+    name = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(100), primary_key=True, nullable=False)
     password = db.Column(db.String(20), nullable = False)
     type = db.Column(db.String(20), nullable = False)
@@ -40,14 +41,16 @@ def register():
     if request.method == 'GET':
         return render_template('register.html')
     else:
+        name = request.form['Name']
         email = request.form['Email']
         type = request.form['Type']
         password = request.form['Password']
-        if not email or not type or not password:
+        if not name or not email or not type or not password:
             flash('Please fill in all fields.')
             return redirect(url_for('register'))
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         reg_details =(
+            name,
             email,
             type,
             hashed_password
@@ -74,11 +77,12 @@ def login():
         email = request.form['Email']
         password = request.form['Password']
         person = Person.query.filter_by(email = email).first()
+        name = person.name
         if not person or not bcrypt.check_password_hash(person.password, password):
             flash('Please check your login details and try again', 'error')
             return render_template('login.html')
         else:
-            session['name'] = email
+            session['name'] = name
             session.permanent = True
             return redirect(url_for('home'))
         
@@ -98,7 +102,7 @@ def logout():
 
 
 def add_users(reg_details):
-    person = Person(email = reg_details[0],type = reg_details[1], password = reg_details[2])
+    person = Person(name = reg_details[0], email = reg_details[1],type = reg_details[2], password = reg_details[3])
     db.session.add(person)
     db.session.commit()
 
