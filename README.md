@@ -3,6 +3,7 @@ B20 assignment 3
 To do:
 
 Database:
+- person(username,email,password(i hashed it),type{student or insturctor})
 - Students(f_name, l_name, stud_id, email, password(HASHED))
 - Professor(f_name, l_name, email, password)
 - Courses(Code, prof_email)
