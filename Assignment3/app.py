@@ -82,9 +82,9 @@ def login():
             return render_template('login.html')
         else:
             name = person.name
-            session['name'] = [name, Person.type]
+            session['name'] = [name, person.type]
             session.permanent = True
-            if Person.type == 'Student':
+            if person.type == 'Student':
                 return redirect(url_for('student', name = name))
             return redirect(url_for('instructor', name = name))
         
@@ -107,6 +107,7 @@ def instructor(name):
 
 @app.route('/logout')
 def logout():
+    session.pop('name', default = None)
     session.pop('name', default = None)
     return redirect(url_for('register'))
 
