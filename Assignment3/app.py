@@ -29,7 +29,18 @@ class Person(db.Model):
 with app.app_context():
     db.create_all()
 
+
 @app.route('/')
+def home():
+    if 'name' in session and session['name'][1] == 'Student':
+        flash('already logged in!!')
+        return redirect(url_for('student', name = session['name'][0]))
+    if 'name' in session and session['name'][1] == 'Instructor':
+        flash('already logged in!!')
+        return redirect(url_for('instructor', name = session['name'][0]))
+    else:
+        return render_template('login.html')
+
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -64,13 +75,16 @@ def register():
         add_users(reg_details)
         flash('Registration Successful! Please login now:')
         return redirect(url_for('login'))
-
+    
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        if 'name' in session:
+        if 'name' in session and session['name'][1] == 'Student':
             flash('already logged in!!')
             return redirect(url_for('student', name = session['name'][0]))
+        if 'name' in session and session['name'][1] == 'Instructor':
+            flash('already logged in!!')
+            return redirect(url_for('instructor', name = session['name'][0]))
         else:
             return render_template('login.html')
     else:
@@ -90,6 +104,7 @@ def login():
         
 @app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
 def student(name):
+    
     if name == session['name'][0]:
         return render_template('index.html')
     else:
