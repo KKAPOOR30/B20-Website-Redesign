@@ -89,7 +89,7 @@ def login():
             return redirect(url_for('instructor', name = name))
         
 @app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
-def student(name):
+def student_home(name):
     if name == session['name'][0]:
         return render_template('index.html')
     else:
