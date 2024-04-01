@@ -8,13 +8,14 @@
     {% endif %}
 {% endwith %}
         <form action="http://127.0.0.1:5000/login" method = "post">
-            <label for="username"> Username </label>
-            <input type="text" id="Username" name="Username">
+            <label for="mail"> Email </label>
+            <input type="text" id="Email" name="Email">
   
             <label for="Password">Password</label>
-            <input type="password" textarea id="text" name="Password"></textarea>
+            <input type="password" textarea id="text" name="Password">
   
             <button type="Login">Login</button>
+            <label><a href="{{ url_for('register') }}">Don't have an account? Sign up</a></label>
         </form>
 
         
