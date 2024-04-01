@@ -16,7 +16,7 @@ bcrypt = Bcrypt(app)
 
 class Person(db.Model):
     __tablename__ = 'Person'
-    name = db.Column(db.String(100), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), primary_key=True, nullable=False)
     password = db.Column(db.String(20), nullable = False)
     type = db.Column(db.String(20), nullable = False)
@@ -77,11 +77,11 @@ def login():
         email = request.form['Email']
         password = request.form['Password']
         person = Person.query.filter_by(email = email).first()
-        name = person.name
         if not person or not bcrypt.check_password_hash(person.password, password):
             flash('Please check your login details and try again', 'error')
             return render_template('login.html')
         else:
+            name = person.name
             session['name'] = name
             session.permanent = True
             return redirect(url_for('home'))
