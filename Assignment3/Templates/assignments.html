@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="Stylesheet" href="Nuoya.css">
-    <title>Assignments</title>
-</head>
-<body>
-</body>
-<header>
-    <div class = "navbar">
-        <a id = "nav" href = "index.html">Home</a>
-        <a id = "nav" href = "calendar.html">Calendar</a>
-        <a id = "nav" href = "news.html">News</a>
-        <a id = "nav" href = "https://piazza.com/utoronto.ca/winter2024/cscb20h3s">Piazza</a>
-        <a id = "nav" href = "lectures.html">Lectures</a>
-        <a id = "nav" href = "labs.html">Labs</a>
-        <a id = "nav" href = "assignments.html">Assignments</a>
-        <a id = "nav" href = "tests.html">Tests</a>
-        <a id = "nav" href = "resources.html">Resources</a>
-        <a id = "nav" href = "team.html">Team</a>
-        <a id = "nav" href = "feedback.html">Feedback</a>
-    </div>
-</header>
+{% extends "nav_foot.html" %}
+{% block content %}
 <div class="container">
     <h1 id="Assignments_title">Assignments</h1>
     <h2>Submit <a id = submithere href="https://markus2.utsc.utoronto.ca/courses">Here </a></h2>
@@ -46,14 +23,4 @@
             <p>Description: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iure dolores, odio iusto explicabo eos ab asperiores accusantium nam doloremque. Recusandae autem placeat doloremque ipsa tenetur voluptatem explicabo earum alias accusamus?</p></p>
         </div>
     </div>
-    
-    <footer>
-        <section class = "ft-main">
-            <h2 id = "foot-title">About</h2>
-            <ul>
-                <li id="foot-cont">To access the Faculty of Computer Science at UofT website <a id="foot-cont-a" href="https://web.cs.toronto.edu/people/faculty-directory">click here</a></li>
-                <li id="foot-cont">Site design by: Kshitij, Nuoya, Marilyn</li>
-            </ul>
-        </section>
-    </footer>    
-</html>
+{% endblock %}
