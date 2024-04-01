@@ -30,13 +30,6 @@ with app.app_context():
     db.create_all()
 
 @app.route('/')
-@app.route('/home')
-def home():
-    pagename = 'home'
-    return render_template('home.html', pagename = pagename)
-
-
-
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -77,7 +70,7 @@ def login():
     if request.method == 'GET':
         if 'name' in session:
             flash('already logged in!!')
-            return redirect(url_for('home'))
+            return redirect(url_for('student', name = session['name'][0]))
         else:
             return render_template('login.html')
     else:
@@ -89,11 +82,22 @@ def login():
             return render_template('login.html')
         else:
             name = person.name
-            session['name'] = name
+            session['name'] = [name, Person.type]
             session.permanent = True
-            return redirect(url_for('home'))
+            if Person.type == 'Student':
+                return redirect(url_for('student', name = name))
+            return redirect(url_for('instructor', name = name))
         
+@app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
+def student(name):
+    if name == session['name'][0]:
+        return render_template('index.html')
+    else:
+        return redirect(url_for('login'))
 
+@app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
+def instructor(name):
+    return render_template('index.html')
 
 
 
@@ -104,7 +108,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('name', default = None)
-    return redirect(url_for('home'))
+    return redirect(url_for('register'))
 
 
 
