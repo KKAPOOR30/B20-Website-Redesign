@@ -89,7 +89,7 @@ def login():
             return redirect(url_for('instructor', name = name))
         
 @app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
-def student_home(name):
+def student(name):
     if name == session['name'][0]:
         return render_template('index.html')
     else:
@@ -100,9 +100,38 @@ def instructor(name):
     return render_template('index.html')
 
 
+@app.route('/<name>/calendar.html')
+def calendar(name):
+    return render_template('calendar.html')
+@app.route('/<name>/index.html')
+def index(name):
+    return render_template('index.html')
+@app.route('/<name>/news.html')
+def news(name):
+    return render_template('news.html')
 
+@app.route('/<name>/lectures.html')
+def lectures(name):
+    return render_template('lectures.html')
 
-
+@app.route('/<name>/labs.html')
+def labs(name):
+    return render_template('labs.html')
+@app.route('/<name>/assignments.html')
+def assignments(name):
+    return render_template('assignments.html')
+@app.route('/<name>/tests.html')
+def tests(name):
+    return render_template('tests.html')
+@app.route('/<name>/resources.html')
+def resources(name):
+    return render_template('resources.html')
+@app.route('/<name>/team.html')
+def team(name):
+    return render_template('team.html')
+@app.route('/<name>/feedback.html')
+def feedback(name):
+    return render_template('feedback.html')
 
 
 @app.route('/logout')
