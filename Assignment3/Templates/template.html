@@ -1,42 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Lecture Notes</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="Stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <title>CSCB20 - Introduction to Databases and Web Applications</title>
+</head>
+
   <body>
     <header>
       <div class="container">
-        <h1 class="logo">Lecture Notes for B20</h1>
+        <h1 class="logo">CSCB20: Introduction to Databases and Web Applications</h1>
         <strong>
-          <nav class="navigation">
-            {% if session.name %}
-            <a href="{{ url_for('student', name = name) }}">Home</a>
-            <a href="#" onclick="confirmLogout()">Logout</a>
-            {% else %}
-            <a href="{{ url_for('register') }}">Register</a>
-            <a href="{{ url_for('login') }}">Login</a>
-            {% endif %}
-        </nav>
-        <script>
-          function confirmLogout(){
-              // Display a confirmation dialog
-              var confirmation = confirm("Are you sure you want to logout?");
-              
-              // If user confirms, redirect to logout URL
-              if (confirmation) {
-                  window.location.href = "{{ url_for('logout') }}";
-              }
-          }
-        </script>
+          
         </strong>
       </div>
     </header>
     <br>
     
-    {% block content %}
-    {% endblock %}
+    
     
  </body>
+
+
+
+{% block content %}
+{% endblock %}
 </html>
