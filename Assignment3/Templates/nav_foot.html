@@ -21,7 +21,19 @@
             <a id = "nav" href = "resources.html">Resources</a>
             <a id = "nav" href = "team.html">Team</a>
             <a id = "nav" href = "feedback.html">Feedback</a>
+            <a id = "nav" onclick="confirmLogout()">Logout</a>
         </div>
+        <script>
+            function confirmLogout(){
+                // Display a confirmation dialog
+                var confirmation = confirm("Are you sure you want to logout?");
+                
+                // If user confirms, redirect to logout URL
+                if (confirmation) {
+                    window.location.href = "{{ url_for('logout') }}";
+                }
+            }
+          </script>
     </header>
 
     {% block content %}
@@ -30,7 +42,7 @@
 </body>
 
 <footer>
-    <section class = "ft-main">
+    <section class = "footer">
         <h2 id = "foot-title">About</h2>
         <ul>
             <li id="foot-cont">To access the Faculty of Computer Science at UofT website <a id="foot-cont-a" href="https://web.cs.toronto.edu/people/faculty-directory">click here</a></li>
