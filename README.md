@@ -3,8 +3,8 @@ B20 assignment 3
 To do:
 
 Database:
-- person(f_name, l_name , email, password(i hashed it), type{student or insturctor})
-- Grades(stud_email, A1, A2, A3, Tutorials, Midterm, Exam, Final)
+- person(name, email, username, password(i hashed it), type{student or insturctor})
+- Grades(email, A1, A2, A3, Tutorials, Midterm, Exam, Final)
 - Feedbacks(prof_email, Feedback)
 
 Do we need to check if thats an acc student number or prof number?

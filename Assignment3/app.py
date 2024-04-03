@@ -26,9 +26,30 @@ class Person(db.Model):
         return f"Person('{self.username}','{self.email}')"
     
 
+class Grades(db.Model):
+    __tablename__ = 'Grades'
+    email = db.Column(db.String(100), unique=True, nullable=False, primary_key=True)
+    A1 = db.Column(db.Numeric, nullable=True)
+    A2 = db.Column(db.Numeric, nullable=True)
+    A3 = db.Column(db.Numeric, nullable=True)
+    tutorials = db.Column(db.Numeric, nullable=True)
+    midterm = db.Column(db.Numeric, nullable=True)
+    exam = db.Column(db.Numeric, nullable=True)
+    final = db.Column(db.Numeric, nullable=True)
+
+
+class Feedback(db.Model):
+    __tablename__ = 'Feedback'
+    email = db.Column(db.String(100), unique=False, nullable=False, primary_key=True)
+    feed_1 = db.Column(db.String, nullable=False)
+    feed_2 = db.Column(db.String, nullable=False)
+    feed_3 =  db.Column(db.String, nullable=False)
+    feed_4 = db.Column(db.String, nullable=False)
+    feed_5 =  db.Column(db.String, nullable=False)
+
+
 with app.app_context():
     db.create_all()
-
 
 
 def home():
