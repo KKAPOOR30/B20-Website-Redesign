@@ -105,45 +105,85 @@ def login():
         
 @app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
 def student(name):
-    return render_template('index.html')
+    if 'name' in session and session['name'][1] == "student" :
+        return render_template('index.html')
+    else:
+        return render_template('login.html')
+
+    
 
 @app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
 def instructor(name):
-    return render_template('index.html')
+    if 'name' in session and session['name'][1] == "instructor" :
+        return render_template('index.html')
+    else:
+        return render_template('login.html')
+    
 
 
 @app.route('/<name>/calendar.html')
 def calendar(name):
-    return render_template('calendar.html')
+    if 'name' in session:
+        return render_template('calendar.html')
+    else:
+        return render_template('login.html')
 @app.route('/<name>/index.html')
 def index(name):
-    return render_template('index.html')
+    if 'name' in session:
+        return render_template('index.html')
+    else:
+        return render_template('login.html')
 @app.route('/<name>/news.html')
 def news(name):
-    return render_template('news.html')
+    if 'name' in session:
+        return render_template('news.html')
+    else:
+        return render_template('login.html')
 
 @app.route('/<name>/lectures.html')
 def lectures(name):
-    return render_template('lectures.html')
+    if 'name' in session:
+        return render_template('lectures.html')
+    else:
+        return render_template('login.html')
 
 @app.route('/<name>/labs.html')
 def labs(name):
-    return render_template('labs.html')
+    if 'name' in session:
+        return render_template('labs.html')
+    else:
+        return render_template('login.html')
 @app.route('/<name>/assignments.html')
 def assignments(name):
-    return render_template('assignments.html')
+    if 'name' in session:
+        return render_template('assignments.html')
+    else:
+        return render_template('login.html')
 @app.route('/<name>/tests.html')
 def tests(name):
-    return render_template('tests.html')
+    if 'name' in session:
+        return render_template('tests.html')
+    else:
+        return render_template('login.html')
+    
 @app.route('/<name>/resources.html')
 def resources(name):
-    return render_template('resources.html')
+    if 'name' in session:
+        return render_template('resources.html')
+    else:
+        return render_template('login.html')
 @app.route('/<name>/team.html')
 def team(name):
-    return render_template('team.html')
+    if 'name' in session:
+        return render_template('team.html')
+    else:
+        return render_template('login.html')
 @app.route('/<name>/feedback.html')
 def feedback(name):
-    return render_template('feedback.html')
+    if 'name' in session:
+        return render_template('feedback.html')
+    else:
+        return render_template('login.html')
 
 
 @app.route('/logout')
