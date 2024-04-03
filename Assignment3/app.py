@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from flask import Flask, render_template, url_for, flash, redirect, request, session
+from flask import Flask,jsonify, render_template, url_for, flash, redirect, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy import text # textual queries
@@ -24,7 +24,17 @@ class Person(db.Model):
 
     def __repr__(self):
         return f"Person('{self.username}','{self.email}')"
-    
+
+class RemarkRequest(db.Model):
+    __tablename__ = 'Remarks'
+    student = db.Column(db.String(200), primary_key=True)
+    test_type = db.Column(db.String(100), primary_key=True)
+    reason = db.Column(db.String(200))
+
+    def __init__(self, student, test_type, reason):
+        self.student = student
+        self.test_type = test_type
+        self.reason = reason
 
 class Grades(db.Model):
     __tablename__ = 'Grades'
@@ -100,14 +110,9 @@ def register():
 @app.route('/')   
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-    if 'name' in session and session['name'][1] == "student" :
-        flash('already logged in!!')
-        return redirect(url_for('student', name = session['name'][0]))
-    if 'name' in session and session['name'][1] == "instructor" :
-        flash('already logged in!!')
-        return redirect(url_for('instructor', name = session['name'][0]))   
     if request.method == 'GET':
-
+        if 'name' in session:
+            return redirect(url_for('student', name = session['name'][0]))
         return render_template('login.html')
     else:
         username = request.form['Username']
@@ -122,25 +127,17 @@ def login():
             session.permanent = True
             if person.type == 'student':
                 return redirect(url_for('student', name = name))
-            return redirect(url_for('instructor', name = name))
+            return redirect(url_for('student', name = name))
         
 @app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
 def student(name):
     if 'name' in session and session['name'][1] == "student" :
         return render_template('index.html')
-    else:
-        return render_template('login.html')
-
-    
-
-@app.route('/<name>/CSCB20', methods = ['GET', 'POST'])
-def instructor(name):
     if 'name' in session and session['name'][1] == "instructor" :
         return render_template('index.html')
-    else:
-        return render_template('login.html')
-    
+    return render_template('login.html')
 
+    
 
 @app.route('/<name>/calendar.html')
 def calendar(name):
@@ -199,6 +196,14 @@ def team(name):
         return render_template('team.html')
     else:
         return render_template('login.html')
+    
+@app.route('/<name>/grades.html')
+def grades(name):
+    if 'name' in session and session['name'][1] == 'student':
+        return render_template('grades.html')
+    elif 'name' in session and session['name'][1] == 'instructor':
+        return render_template('index.html')
+    return render_template('login.html')
 @app.route('/<name>/feedback.html')
 def feedback(name):
     if 'name' in session:
@@ -219,6 +224,37 @@ def add_users(reg_details):
     person = Person(username = reg_details[0],name = reg_details[1] , email = reg_details[2],type = reg_details[3], password = reg_details[4])
     db.session.add(person)
     db.session.commit()
+
+
+@app.route('/submit-remark-request', methods=['POST'])
+def submit_remark_request():
+
+    test_type = request.form['test_type']
+    reason = request.form['reason']
+    name = session['name'][0]
+
+    existing_record = RemarkRequest.query.filter_by(student=name, test_type=test_type).first()
+    if existing_record:
+        return jsonify({'message': 'Remark already submitted'})
+
+    # Create a new RemarkRequest object and add it to the database
+    remark_request = RemarkRequest(name,test_type=test_type, reason=reason)
+
+    db.session.add(remark_request)
+    db.session.commit()
+
+    return jsonify({'message': 'Remark request submitted successfully'})
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
