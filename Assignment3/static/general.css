@@ -15,6 +15,38 @@ body{
     background-color:rgb(67, 67, 67);
     z-index:100;
 }
+/* Your existing CSS styles here */
+
+/* Table styles */
+table {
+    position: sticky;
+    width: 100%; /* Adjust margin as needed */
+    right: 5px;
+    left: 5px;
+    border-collapse: collapse;
+    margin-top: 5px; /* Adjust margin as needed */
+}
+
+thead {
+    background-color: rgb(67, 67, 67);
+    color: white;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #ddd;
+}
+
+
 
 #nav{
     color:white;

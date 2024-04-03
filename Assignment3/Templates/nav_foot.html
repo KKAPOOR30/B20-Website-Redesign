@@ -10,6 +10,7 @@
 <body>
     <header>
         <div class = "navbar">
+            {% if session['name'][1] == 'student' %}
             <a id = "nav" href = "index.html">Home</a>
             <a id = "nav" href = "calendar.html">Calendar</a>
             <a id = "nav" href = "news.html">News</a>
@@ -21,7 +22,16 @@
             <a id = "nav" href = "resources.html">Resources</a>
             <a id = "nav" href = "team.html">Team</a>
             <a id = "nav" href = "feedback.html">Feedback</a>
+            <a id = "nav" href = "grades.html">Grades</a>
             <a id = "nav" onclick="confirmLogout()">Logout</a>
+            
+
+            {% else %}
+            <a id = "nav" href = "index.html">Home</a>
+            <a id = "nav" href = "calendar.html">Calendar</a>
+            <a id = "nav" onclick="confirmLogout()">Logout</a>
+
+            {% endif %}
         </div>
         <script>
             function confirmLogout(){
