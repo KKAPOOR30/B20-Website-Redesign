@@ -38,7 +38,7 @@ class RemarkRequest(db.Model):
 
 class Grades(db.Model):
     __tablename__ = 'Grades'
-    email = db.Column(db.String(100), unique=True, nullable=False, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False, primary_key=True)
     A1 = db.Column(db.Numeric, nullable=True)
     A2 = db.Column(db.Numeric, nullable=True)
     A3 = db.Column(db.Numeric, nullable=True)
@@ -50,12 +50,14 @@ class Grades(db.Model):
 
 class Feedback(db.Model):
     __tablename__ = 'Feedback'
-    email = db.Column(db.String(100), unique=False, nullable=False, primary_key=True)
-    feed_1 = db.Column(db.String, nullable=False)
-    feed_2 = db.Column(db.String, nullable=False)
-    feed_3 =  db.Column(db.String, nullable=False)
-    feed_4 = db.Column(db.String, nullable=False)
-    feed_5 =  db.Column(db.String, nullable=False)
+    instructor = db.Column(db.String(200), primary_key=True)
+    student = db.Column(db.String(100), primary_key=True)
+    feedback = db.Column(db.String(200))
+
+    def __init__(self, instructor, student, feedback):
+        self.instructor = instructor
+        self.student = student
+        self.feedback = feedback
 
 
 with app.app_context():
@@ -123,7 +125,7 @@ def login():
             return render_template('login.html')
         else:
             name = person.name
-            session['name'] = [name, person.type]
+            session['name'] = [name, person.type,person.username]
             session.permanent = True
             if person.type == 'student':
                 return redirect(url_for('student', name = name))
@@ -204,12 +206,23 @@ def grades(name):
     elif 'name' in session and session['name'][1] == 'instructor':
         return render_template('index.html')
     return render_template('login.html')
+
+
+
+
+def get_all_instructors():
+    instructors = Person.query.filter_by(type='instructor').all()
+    return [instructor.name for instructor in instructors]
+
 @app.route('/<name>/feedback.html')
 def feedback(name):
     if 'name' in session:
-        return render_template('feedback.html')
+        instructors = get_all_instructors()
+        return render_template('feedback.html', instructors=instructors)
     else:
         return render_template('login.html')
+
+
 
 
 @app.route('/logout')
@@ -231,7 +244,7 @@ def submit_remark_request():
 
     test_type = request.form['test_type']
     reason = request.form['reason']
-    name = session['name'][0]
+    name = session['name'][2]
 
     existing_record = RemarkRequest.query.filter_by(student=name, test_type=test_type).first()
     if existing_record:
@@ -245,6 +258,44 @@ def submit_remark_request():
 
     return jsonify({'message': 'Remark request submitted successfully'})
 
+
+
+
+@app.route('/submit-feedback', methods=['POST'])
+def submit_feedback():
+    if request.method == 'POST':
+        feedback_text = request.form['feedback_text']
+        instructor = request.form['instructor']
+        student = session['name'][0]  # Assuming you store student's name in the session
+
+        # Check if feedback already exists for the same student and instructor
+        existing_feedback = Feedback.query.filter_by(instructor=instructor, student=student).first()
+
+        if existing_feedback:
+            # Feedback already exists, you can handle it here, e.g., update the existing feedback
+            # For now, let's just show a message to the user
+            flash('Feedback already submitted for this instructor!', 'error')
+            return redirect(url_for('feedback', name=session['name'][0]))  # Redirect to a suitable page
+
+        # Create a new Feedback object and add it to the database
+        feedback = Feedback(instructor=instructor, student=student, feedback=feedback_text)
+        db.session.add(feedback)
+        db.session.commit()
+        flash('Feedback submitted successfully!', 'success')
+        return redirect(url_for('feedback' ,name= session['name'][0]))
+
+
+
+
+
+
+
+
+@app.route('/get-instructors', methods=['GET'])
+def get_instructors():
+    instructors = Person.query.filter_by(type='instructor').all()
+    instructor_names = [instructor.name for instructor in instructors]
+    return jsonify({'instructors': instructor_names})
 
 
 
