@@ -1,8 +1,16 @@
 {% extends "nav_foot.html" %}
 {% block content %}
+{% with messages = get_flashed_messages(with_categories = True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class = "flash">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     
 <div class="container">
     <h1>Course Marks</h1>
+    
     <table>
         <thead>
             <tr>
@@ -13,9 +21,10 @@
             </tr>
         </thead>
         <tbody>
+            
             <tr>
                 <td>Assignment 1</td>
-                <td>2</td>
+                <td>{% for grade in grades %}{% if grades[0].A1 %}{{ grades[0].A1 }}{% else %}{% endif %}{% endfor %}</td>
                 <td>8%</td>
                 <td>
                     <button class="remark-button" data-test="Assignment 1">Request Remark</button>
@@ -28,7 +37,7 @@
             </tr>
             <tr>
                 <td>Assignment 2</td>
-                <td>1</td>
+                <td>{% for grade in grades %}{% if grades[0].A2 %}{{ grades[0].A2 }}{% else %}{% endif %}{% endfor %}</td>
                 <td>10%</td>
                 <td>
                     <button class="remark-button" data-test="Assignment 2">Request Remark</button>
@@ -41,7 +50,7 @@
             </tr>
             <tr>
                 <td>Assignment 3</td>
-                <td>2</td>
+                <td>{% for grade in grades %}{% if grades[0].A3 %}{{ grades[0].A3 }}{% else %}{% endif %}{% endfor %}</td>
                 <td>15%</td>
                 <td>
                     <button class="remark-button" data-test="Assignment 3">Request Remark</button>
@@ -53,8 +62,21 @@
                 </td>
             </tr>
             <tr>
+                <td>Tutorials</td>
+                <td>{% for grade in grades %}{% if grades[0].tutorials %}{{ grades[0].tutorials }}{% else %}{% endif %}{% endfor %}</td>
+                <td>15%</td>
+                <td>
+                    <button class="remark-button" data-test="Tutorials">Request Remark</button>
+                    <form class="remark-form" data-test="Tutorials" style="display: none;" method="POST" action="/submit-remark-request">
+                        <input type="hidden" name="test_type" value="Tutorials">
+                        <input type="text" name="reason" placeholder="Enter Reason">
+                        <button type="submit">Submit</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
                 <td>Midterm Exam</td>
-                <td></td>
+                <td>{% for grade in grades %}{% if grades[0].midterm %}{{ grades[0].midterm }}{% else %}{% endif %}{% endfor %}</td>
                 <td>25%</td>
                 <td>
                     <button class="remark-button" data-test="Midterm Exam">Request Remark</button>
@@ -67,7 +89,7 @@
             </tr>
             <tr>
                 <td>Final Exam</td>
-                <td>5</td>
+                <td>{% for grade in grades %}{% if grades[0].final %}{{ grades[0].final }}{% else %}{% endif %}{% endfor %}</td>
                 <td>40%</td>
                 <td>
                     <button class="remark-button" data-test="Final Exam">Request Remark</button>
@@ -78,6 +100,7 @@
                     </form>
                 </td>
             </tr>
+            
             <!-- Add more rows as needed -->
         </tbody>
     </table>

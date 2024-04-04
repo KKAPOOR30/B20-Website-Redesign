@@ -38,13 +38,12 @@ class RemarkRequest(db.Model):
 
 class Grades(db.Model):
     __tablename__ = 'Grades'
-    username = db.Column(db.String(100), unique=True, nullable=False, primary_key=True)
+    username = db.Column(db.String(100), nullable=False, primary_key=True)
     A1 = db.Column(db.Numeric, nullable=True)
     A2 = db.Column(db.Numeric, nullable=True)
     A3 = db.Column(db.Numeric, nullable=True)
     tutorials = db.Column(db.Numeric, nullable=True)
     midterm = db.Column(db.Numeric, nullable=True)
-    exam = db.Column(db.Numeric, nullable=True)
     final = db.Column(db.Numeric, nullable=True)
 
 
@@ -62,6 +61,8 @@ class Feedback(db.Model):
 
 with app.app_context():
     db.create_all()
+
+
 
 
 def home():
@@ -199,10 +200,16 @@ def team(name):
     else:
         return render_template('login.html')
     
+
+def get_grades():
+    grades = Grades.query.filter_by(username=session['name'][2]).all()
+    return [grade for grade in grades]
+
 @app.route('/<name>/grades.html')
 def grades(name):
     if 'name' in session and session['name'][1] == 'student':
-        return render_template('grades.html')
+        grades = get_grades()
+        return render_template('grades.html' , grades = grades)
     elif 'name' in session and session['name'][1] == 'instructor':
         return render_template('index.html')
     return render_template('login.html')

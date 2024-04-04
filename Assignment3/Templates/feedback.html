@@ -21,7 +21,9 @@
                     <option value="{{ instructor }}">{{ instructor }}</option>
                 {% endfor %}
             </select>
+            {% if instructors %}
             <input id="form-submit" type="submit">
+            {% endif %}
         </form>
         
     </div><br>
