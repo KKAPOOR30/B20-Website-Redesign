@@ -44,6 +44,7 @@ class Grades(db.Model):
     A3 = db.Column(db.Numeric, nullable=True)
     tutorials = db.Column(db.Numeric, nullable=True)
     midterm = db.Column(db.Numeric, nullable=True)
+    exam = db.Column(db.Numeric, nullable=True)
     final = db.Column(db.Numeric, nullable=True)
 
     def __init__(self, username, A1, A2, A3, tutorials, midterm, exam, final):
@@ -60,7 +61,7 @@ class Feedback(db.Model):
     __tablename__ = 'Feedback'
     instructor = db.Column(db.String(200), primary_key=True)
     student = db.Column(db.String(100), primary_key=True)
-    feedback = db.Column(db.String(200))
+    feedback = db.Column(db.String(10000))
 
     def __init__(self, instructor, student, feedback):
         self.instructor = instructor
@@ -120,7 +121,8 @@ def register():
             return redirect(url_for('register'))
 
         add_users(reg_details)
-        add_student_to_grades(username)
+        if type == 'student':
+            add_student_to_grades(username)
         flash('Registration Successful! Please login now:')
         return redirect(url_for('login'))
     
@@ -224,10 +226,15 @@ def grades(name):
     if 'name' in session and session['name'][1] == 'student':
         grades = get_grades()
         return render_template('grades.html' , grades = grades)
-    elif 'name' in session and session['name'][1] == 'instructor':
-        return render_template('index.html')
     return render_template('login.html')
 
+
+@app.route('/<name>/instructor_feedback.html')
+def instructor_feedback(name):
+    if 'name' in session and session['name'][1] == 'instructor':
+        feedbacks = db.session.query(Feedback).filter_by(instructor=session['name'][2]).all()
+        return render_template('instructor_feedback.html', feedbacks=feedbacks)
+    return render_template("login.html")
 
 def get_all_student_grades():
     students = Grades.query.all()
@@ -235,7 +242,7 @@ def get_all_student_grades():
 
 @app.route('/<name>/instructor_grades.html')
 def instructor_grades(name):
-    if 'name' in session:
+    if 'name' in session and session['name'][1] == 'instructor':
         students = get_all_student_grades()
         for i in range(len(students)):
             for j in range(8):

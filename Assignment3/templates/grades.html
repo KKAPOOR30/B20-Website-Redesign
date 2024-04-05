@@ -89,7 +89,7 @@
             </tr>
             <tr>
                 <td>Final Exam</td>
-                <td>{% for grade in grades %}{% if grades[0].final %}{{ grades[0].final }}{% else %}{% endif %}{% endfor %}</td>
+                <td>{% for grade in grades %}{% if grades[0].exam %}{{ grades[0].final }}{% else %}{% endif %}{% endfor %}</td>
                 <td>40%</td>
                 <td>
                     <button class="remark-button" data-test="Final Exam">Request Remark</button>
@@ -100,7 +100,10 @@
                     </form>
                 </td>
             </tr>
-            
+            <tr>
+                <td>Overall</td>
+                <td>{% for grade in grades %}{% if grades[0].final %}{{ grades[0].final }}{% else %}{% endif %}{% endfor %}</td>
+            </tr>
             <!-- Add more rows as needed -->
         </tbody>
     </table>
