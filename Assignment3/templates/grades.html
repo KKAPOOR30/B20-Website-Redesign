@@ -89,12 +89,25 @@
             </tr>
             <tr>
                 <td>Final Exam</td>
-                <td>{% for grade in grades %}{% if grades[0].final %}{{ grades[0].final }}{% else %}{% endif %}{% endfor %}</td>
+                <td>{% for grade in grades %}{% if grades[0].exam %}{{ grades[0].exam }}{% else %}{% endif %}{% endfor %}</td>
                 <td>40%</td>
                 <td>
                     <button class="remark-button" data-test="Final Exam">Request Remark</button>
                     <form class="remark-form" data-test="Final Exam" style="display: none;" method="POST" action="/submit-remark-request">
                         <input type="hidden" name="test_type" value="Final Exam">
+                        <input type="text" name="reason" placeholder="Enter Reason">
+                        <button type="submit">Submit</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>Final Grade</td>
+                <td>{% for grade in grades %}{% if grades[0].final %}{{ grades[0].final }}{% else %}{% endif %}{% endfor %}</td>
+                <td>40%</td>
+                <td>
+                    <button class="remark-button" data-test="Final Grade">Request Remark</button>
+                    <form class="remark-form" data-test="Final Grade" style="display: none;" method="POST" action="/submit-remark-request">
+                        <input type="hidden" name="test_type" value="Final Grade">
                         <input type="text" name="reason" placeholder="Enter Reason">
                         <button type="submit">Submit</button>
                     </form>
