@@ -73,8 +73,8 @@ with app.app_context():
     db.create_all()
 
 
-def add_student_to_grades(username, A1=None, A2=None, A3=None, tutorials=None, midterm=None, exam=None, final=None):
-    student = Grades(username, A1, A2, A3, tutorials, midterm, exam, final)
+def add_student_to_grades(username, A1=None, A2=None, A3=None, tutorials=None, midterm=None,exam=None, final=None):
+    student = Grades(username, A1, A2, A3, tutorials, midterm,exam, final)
     db.session.add(student)
     db.session.commit()
 
@@ -238,7 +238,7 @@ def instructor_feedback(name):
 
 def get_all_student_grades():
     students = Grades.query.all()
-    return [[s.username, s.A1, s.A2, s.A3, s.tutorials, s.midterm, s.exam, s.final] for s in students]
+    return [[s.username, s.A1, s.A2, s.A3, s.tutorials, s.midterm,s.exam,s.final] for s in students]
 
 @app.route('/<name>/instructor_grades.html')
 def instructor_grades(name):
@@ -284,6 +284,9 @@ def insert_grade():
         total += 25
     if info.exam != None:
         grade += 40 * info.exam / 100
+        total += 40
+    if info.final != None:
+        grade += 40 * info.final / 100
         total += 40
     db.session.query(Grades).filter(Grades.username == stud).update({'final': 100*grade/total})
     db.session.commit()
