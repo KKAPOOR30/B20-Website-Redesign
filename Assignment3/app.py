@@ -47,6 +47,15 @@ class Grades(db.Model):
     exam = db.Column(db.Numeric, nullable=True)
     final = db.Column(db.Numeric, nullable=True)
 
+    def __init__(self, username, A1, A2, A3, tutorials, midterm, exam, final):
+        self.username = username
+        self.A1 = A1
+        self.A2 = A2
+        self.A3 = A3
+        self.tutorials = tutorials
+        self.midterm = midterm
+        self.exam = exam
+        self.final = final
 
 class Feedback(db.Model):
     __tablename__ = 'Feedback'
@@ -62,6 +71,12 @@ class Feedback(db.Model):
 
 with app.app_context():
     db.create_all()
+
+
+def add_student_to_grades(username, A1=None, A2=None, A3=None, tutorials=None, midterm=None, exam=None, final=None):
+    student = Grades(username, A1, A2, A3, tutorials, midterm, exam, final)
+    db.session.add(student)
+    db.session.commit()
 
 
 def home():
@@ -106,6 +121,7 @@ def register():
             return redirect(url_for('register'))
 
         add_users(reg_details)
+        add_student_to_grades(username)
         flash('Registration Successful! Please login now:')
         return redirect(url_for('login'))
     
@@ -208,7 +224,58 @@ def grades(name):
     return render_template('login.html')
 
 
+def get_all_student_grades():
+    students = Grades.query.all()
+    return [[s.username, s.A1, s.A2, s.A3, s.tutorials, s.midterm, s.exam, s.final] for s in students]
 
+@app.route('/<name>/instructor_grades.html')
+def instructor_grades(name):
+    if 'name' in session:
+        students = get_all_student_grades()
+        for i in range(len(students)):
+            for j in range(8):
+                if students[i][j] == None:
+                    students[i][j] = '-'
+        return render_template('instructor_grades.html', students = students)
+    else:
+        return render_template('login.html')
+    
+@app.route('/insert_grade', methods=['POST'])
+def insert_grade():
+    stud = request.form['student_select'] 
+    mark_for = request.form['grade']
+    mark = request.form['mark']
+    if not mark.isdigit():
+        mark = 0
+    elif mark.isdigit() and mark != '':
+        mark = int(mark)
+
+    db.session.query(Grades).filter(Grades.username == stud).update({mark_for: mark})
+    db.session.commit()
+    info = db.session.query(Grades).filter(Grades.username == stud).first()
+    grade = 0
+    total = 0
+    if info.A1 != None:
+        grade += 8 * info.A1 / 100
+        total += 8
+    if info.A2 != None:
+        grade += 10 * info.A2 / 100
+        total += 10
+    if info.A3 != None:
+        grade += 15 * info.A3 / 100
+        total += 15
+    if info.tutorials != None:
+        grade += 2 * info.tutorials / 100
+        total += 2
+    if info.midterm != None:
+        grade += 25 * info.midterm / 100
+        total += 25
+    if info.exam != None:
+        grade += 40 * info.exam / 100
+        total += 40
+    db.session.query(Grades).filter(Grades.username == stud).update({'final': 100*grade/total})
+    db.session.commit()
+    return redirect(url_for('instructor_grades', name=session['name'][0]))
 
 def get_all_instructors():
     instructors = Person.query.filter_by(type='instructor').all()
@@ -221,8 +288,6 @@ def feedback(name):
         return render_template('feedback.html', instructors=instructors)
     else:
         return render_template('login.html')
-
-
 
 
 @app.route('/logout')
@@ -296,11 +361,6 @@ def get_instructors():
     instructors = Person.query.filter_by(type='instructor').all()
     instructor_names = [instructor.name for instructor in instructors]
     return jsonify({'instructors': instructor_names})
-
-
-
-
-
 
 
 
