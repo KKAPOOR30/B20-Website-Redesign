@@ -409,3 +409,14 @@ iframe{
     margin-bottom: 5px;
     border-radius: 20px;
 }
+
+.team_images {
+    display:inline-block;
+}
+
+.team_images > div > img {
+    width:250px;
+    height:300px;
+    border-radius: 20px;
+    margin: 20px
+}

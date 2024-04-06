@@ -1,16 +1,19 @@
 {% extends "nav_foot.html" %}
 {% block content %}
-    <section class="container1">
-        <h1>Course Team</h1>
-            <div class="slider">
-                <img src="anna.jpg" alt="anna" />
-                <img src="navinn.jpg" alt="navinn" />
-                <img src="profile.jpg" alt="profile" />
+    <section class="container">
+        <h1 class="page_title">Course Team</h1>
+        <div class="team_images">
+            <div>
+                <img src="{{ url_for('static', filename='anna.jpg') }}" alt="anna" />
+                <p>Anna Bretscher</p>
             </div>
-            <div class="slider-nav">
-                <a href="#slide-1"></a>
-                <a href="#slide-2"></a>
-                <a href="#slide-3"></a>
+            <div>
+                <img src="{{ url_for('static', filename='navinn.jpg') }}" alt="navinn" />
+                <p>Navinn</p>
+            </div>
+            <div> 
+                <img src="{{ url_for('static', filename='profile.jpg') }}" alt="profile" />
+                <p>TBD</p>
             </div>
         </div>
     </section>
