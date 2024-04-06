@@ -24,7 +24,7 @@
             <a id = "nav" href = "feedback.html">Feedback</a>
             <a id = "nav" href = "grades.html">Grades</a>
             <a id = "nav" onclick="confirmLogout()">Logout</a>
-            
+        </div>    
 
             {% else %}
             <a id = "nav" href = "index.html">Home</a>
@@ -37,12 +37,11 @@
             <a id = "nav" href = "tests.html">Tests</a>
             <a id = "nav" href = "resources.html">Resources</a>
             <a id = "nav" href = "team.html">Team</a>
-            <a id = "nav" href = "instructor_feedback.html">Feedback</a>
             <a id = "nav" href = "instructor_grades.html">Grades</a>
             <a id = "nav" onclick="confirmLogout()">Logout</a>
-
-            {% endif %}
         </div>
+            {% endif %}
+
         <script>
             function confirmLogout(){
                 // Display a confirmation dialog

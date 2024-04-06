@@ -339,6 +339,17 @@ def submit_remark_request():
     return jsonify({'message': 'Remark request submitted successfully'})
 
 
+@app.route('/instructor_regrade_request.html')
+def instructor_regrade_request():
+    if 'name' in session and session['name'][1] == 'instructor':
+        A1 = db.session.query(RemarkRequest).filter_by(test_type = 'Assignment 1').all()
+        A2 = db.session.query(RemarkRequest).filter_by(test_type = 'Assignment 2').all()
+        A3 = db.session.query(RemarkRequest).filter_by(test_type = 'Assignment 3').all()
+        Midterm = db.session.query(RemarkRequest).filter_by(test_type = 'Midterm Exam').all()
+        Tutorials = db.session.query(RemarkRequest).filter_by(test_type = 'Tutorials').all()
+        Exam = db.session.query(RemarkRequest).filter_by(test_type = 'Final Exam').all()
+        return render_template('instructor_regrade_request.html', A1=A1, A2=A2, A3=A3, Midterm=Midterm, Tutorials=Tutorials, Exam=Exam)
+    return render_template('login.html')
 
 
 @app.route('/submit-feedback', methods=['POST'])
