@@ -2,7 +2,7 @@
 {% block content %}
 
     {% if session['name'][1] == 'instructor' %}
-    <h3>Welcome {{ session['name'][0] }}, you can access your feedback <a href="instructor_feedback.html">here</a>, and you can access the remark requests <a href="{{ url_for('instructor_regrade_request') }}">here</a>.</h2>
+    <h3>Welcome {{ session['name'][0] }}, you can access your feedback <a href="instructor_feedback.html">here</a>, and you can access the remark requests <a href="instructor_regrade_request.html">here</a>.</h2>
     {% endif %}
     
     <div class ="course-info">

@@ -294,7 +294,7 @@ def insert_grade():
 
 def get_all_instructors():
     instructors = Person.query.filter_by(type='instructor').all()
-    return [instructor.name for instructor in instructors]
+    return [instructor.username for instructor in instructors]
 
 @app.route('/<name>/feedback.html')
 def feedback(name):
@@ -339,8 +339,8 @@ def submit_remark_request():
     return jsonify({'message': 'Remark request submitted successfully'})
 
 
-@app.route('/instructor_regrade_request.html')
-def instructor_regrade_request():
+@app.route('/<name>/instructor_regrade_request.html')
+def instructor_regrade_request(name):
     if 'name' in session and session['name'][1] == 'instructor':
         A1 = db.session.query(RemarkRequest).filter_by(test_type = 'Assignment 1').all()
         A2 = db.session.query(RemarkRequest).filter_by(test_type = 'Assignment 2').all()
