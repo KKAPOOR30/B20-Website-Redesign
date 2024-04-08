@@ -3,10 +3,11 @@ from flask import Flask,jsonify, render_template, url_for, flash, redirect, requ
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy import text # textual queries
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///accounts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.getcwd(), 'Assignment3', 'assignment3.db')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes = 15)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -285,9 +286,6 @@ def insert_grade():
     if info.exam != None:
         grade += 40 * info.exam / 100
         total += 40
-    if info.final != None:
-        grade += 40 * info.final / 100
-        total += 40
     db.session.query(Grades).filter(Grades.username == stud).update({'final': 100*grade/total})
     db.session.commit()
     return redirect(url_for('instructor_grades', name=session['name'][0]))
@@ -328,7 +326,8 @@ def submit_remark_request():
 
     existing_record = RemarkRequest.query.filter_by(student=name, test_type=test_type).first()
     if existing_record:
-        return jsonify({'message': 'Remark already submitted'})
+        flash('Request already submitted!', 'error')
+        return redirect(url_for('grades' ,name= session['name'][0]))
 
     # Create a new RemarkRequest object and add it to the database
     remark_request = RemarkRequest(name,test_type=test_type, reason=reason)
@@ -336,7 +335,8 @@ def submit_remark_request():
     db.session.add(remark_request)
     db.session.commit()
 
-    return jsonify({'message': 'Remark request submitted successfully'})
+    flash('Request submitted successfully!', 'success')
+    return redirect(url_for('grades' ,name= session['name'][0]))
 
 
 @app.route('/<name>/instructor_regrade_request.html')
